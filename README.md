@@ -1,8 +1,15 @@
 # AI-Powered Course Content Simplifier
 
-**Problem Statement #19 · IBM University Engagement Project**
+**Problem Statement #19 · Course Content Simplification Agent**
 
-Powered by **IBM Granite** (`ibm/granite-3-8b-instruct`) via **IBM watsonx.ai**
+The Challenge – Educational materials often vary in complexity and are not always accessible to learners 
+with different levels of prior knowledge. Students may struggle to grasp key concepts due to jargon
+heavy or overly advanced explanations in faculty notes and textbooks. The challenge is to develop an AI
+powered agent that can intelligently analyze academic content and reframe explanations based on the 
+learner's current proficiency—ranging from beginner to expert. This would support more inclusive 
+learning and personalized education delivery at scale. 
+
+Powered by **Edunet Foundation**  via **IBM watsonx.ai**
 
 ---
 
@@ -206,27 +213,6 @@ After loading, the **Study Materials** page lets you select any passage and comp
 
 ---
 
-## Troubleshooting
 
-| Problem | Solution |
-|---|---|
-| `No module named streamlit` | Run `pip install -r requirements.txt` |
-| IBM Granite API 401 Unauthorized | Check `WATSONX_API_KEY` in your `.env` file |
-| IBM Granite API 404 Not Found | Check `WATSONX_PROJECT_ID` and `GRANITE_MODEL_ID` |
-| App shows Demo Mode but credentials are set | Ensure `.env` exists (not just `.env.example`) and credentials don't start with `your_` |
-| PDF upload fails | Ensure `pypdf>=4.0.0` is installed: `pip install pypdf` |
-| Kaggle download fails | Accept competition rules on Kaggle and check `~/.kaggle/kaggle.json` exists |
-| App not opening in browser | Navigate to [http://localhost:8501](http://localhost:8501) manually |
-| Port 8501 already in use | Streamlit will use 8502 — check the terminal output for the exact URL |
-
----
-
-## .gitignore — Key Exclusions
-
-`.env`, `venv/`, `__pycache__/`, `*.pptx`, `node_modules/`, `*.log`
-
-The `.env` file is never committed. Use `.env.example` as the template.
-
----
 
 *Built with IBM Granite · IBM watsonx.ai · Streamlit · Problem Statement #19*
