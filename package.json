@@ -1,0 +1,12 @@
+{
+  "name": "course-simplifier",
+  "version": "1.0.0",
+  "description": "AI-Powered Course Content Simplifier using IBM Granite",
+  "scripts": {
+    "dev": "python -m streamlit run app.py",
+    "install:py": "pip install -r requirements.txt"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
