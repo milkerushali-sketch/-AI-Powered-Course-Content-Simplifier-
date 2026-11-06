@@ -277,7 +277,27 @@ section[data-testid="stSidebar"] div[data-testid="stExpander"] summary { color: 
   background: #fff !important;
   box-shadow: 0 0 0 4px rgba(90,63,192,.10), inset 0 1px 2px rgba(26,35,64,.04) !important;
 }
-.stTextArea textarea::placeholder { color: #aab0c8 !important; }
+.stTextArea textarea::placeholder { color: rgba(26, 35, 64, 0.7) !important; }
+
+/* Make form text readable in both light and dark widget wrappers */
+.stTextArea textarea,
+.stTextArea textarea::placeholder,
+.stSelectbox [data-baseweb="select"],
+.stSelectbox [data-baseweb="select"] *,
+.stTextInput input,
+[data-testid="stFileUploader"] label,
+[data-testid="stFileUploader"] p,
+[data-testid="stFileUploader"] span,
+.stWarning p,
+.stInfo p,
+.stSuccess p,
+.stError p,
+.stAlert > div,
+div[data-testid="stExpander"] summary,
+div[data-testid="stExpander"] summary span,
+div[data-testid="stExpander"] summary p {
+  color: var(--navy) !important;
+}
 
 .pill-row {
   display: flex;
@@ -372,8 +392,15 @@ div[data-testid="stExpander"] > div:first-child { color: var(--navy) !important;
 
 [data-testid="stFileUploader"] label,
 [data-testid="stFileUploader"] p,
-[data-testid="stFileUploader"] span { color: var(--text) !important; }
-[data-testid="stFileUploaderDropzone"] { border: 1.5px dashed var(--border) !important; background: #f7f8fc !important; }
+[data-testid="stFileUploader"] span {
+  color: var(--navy) !important;
+  font-weight: 600 !important;
+}
+[data-testid="stFileUploaderDropzone"] {
+  border: 1.5px dashed var(--border) !important;
+  background: #f7f8fc !important;
+  color: var(--navy) !important;
+}
 [data-baseweb="popover"] * { color: var(--text) !important; background: #fff; }
 
 .stButton > button {
