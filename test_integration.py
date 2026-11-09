@@ -16,7 +16,7 @@ RESULTS = []
 def record(test_id, name, passed, detail=""):
     status = "PASS" if passed else "FAIL"
     RESULTS.append((test_id, name, status, detail))
-    icon = "✅" if passed else "❌"
+    icon = "[OK]" if passed else "[FAIL]"
     print(f"  {icon} [{status}] {name}")
     if detail:
         for line in str(detail).splitlines()[:6]:
@@ -31,7 +31,7 @@ PHOTO_TEXT = (
     "Photosynthesis is the process by which green plants, algae, and some bacteria "
     "convert light energy, usually from the sun, into chemical energy stored in glucose. "
     "This process occurs primarily in the chloroplasts of plant cells, using chlorophyll "
-    "to absorb light. The overall equation is: 6CO2 + 6H2O + light energy → C6H12O6 + 6O2. "
+    "to absorb light. The overall equation is: 6CO2 + 6H2O + light energy -> C6H12O6 + 6O2. "
     "Photosynthesis is fundamental to life on Earth because it produces oxygen and forms "
     "the base of the food chain."
 )
@@ -45,10 +45,10 @@ section("1. CREDENTIAL & CONFIGURATION CHECK")
 api_key    = os.getenv("WATSONX_API_KEY", "")
 project_id = os.getenv("WATSONX_PROJECT_ID", "")
 url        = os.getenv("WATSONX_URL", "https://us-south.ml.cloud.ibm.com")
-model_id   = os.getenv("GRANITE_MODEL_ID", "ibm/granite-13b-instruct-v2")
+model_id   = os.getenv("GRANITE_MODEL_ID", "ibm/granite-3-8b-instruct")
 
-print(f"  WATSONX_API_KEY    : {'SET (len=' + str(len(api_key)) + ')' if api_key else 'NOT SET ⚠️'}")
-print(f"  WATSONX_PROJECT_ID : {'SET (len=' + str(len(project_id)) + ')' if project_id else 'NOT SET ⚠️'}")
+print(f"  WATSONX_API_KEY    : {'SET (len=' + str(len(api_key)) + ')' if api_key else 'NOT SET !'}")
+print(f"  WATSONX_PROJECT_ID : {'SET (len=' + str(len(project_id)) + ')' if project_id else 'NOT SET !'}")
 print(f"  WATSONX_URL        : {url}")
 print(f"  GRANITE_MODEL_ID   : {model_id}")
 
@@ -72,7 +72,7 @@ record("1.6", "granite.get_model_id() returns model string",
 section("2. IBM IAM AUTHENTICATION")
 
 if not granite.is_configured():
-    print("  ⚠️  Skipping IAM test — credentials not configured.")
+    print("  !  Skipping IAM test — credentials not configured.")
     record("2.1", "IAM token fetch", False, "SKIPPED — credentials not set")
 else:
     try:
@@ -118,7 +118,7 @@ for level in ["Beginner", "Intermediate", "Advanced"]:
         if granite.is_configured():
             record(f"3.{level[:3]}.3", f"[{level}] Response is REAL AI (not demo placeholder)",
                    not is_demo,
-                   "⚠️ Got DEMO output despite credentials being set!" if is_demo else f"Real AI response in {elapsed}s")
+                   "! Got DEMO output despite credentials being set!" if is_demo else f"Real AI response in {elapsed}s")
         else:
             record(f"3.{level[:3]}.3", f"[{level}] Demo mode active and labelled correctly",
                    is_demo,
@@ -421,7 +421,7 @@ print(f"\n  Total tests : {len(RESULTS)}")
 print(f"  PASSED      : {len(passed)}")
 print(f"  FAILED      : {len(failed)}")
 print(f"  SKIPPED     : {len(skip)}")
-print(f"\n  Overall     : {'✅ ALL PASS' if not failed else '❌ SOME FAILURES'}")
+print(f"\n  Overall     : {'[OK] ALL PASS' if not failed else '[FAIL] SOME FAILURES'}")
 
 if failed:
     print("\n  FAILURES:")
@@ -429,22 +429,22 @@ if failed:
         print(f"    [{tid}] {name}")
         if detail and "SKIP" not in detail:
             for line in str(detail).splitlines()[:3]:
-                print(f"          → {line}")
+                print(f"          -> {line}")
 
 if not granite.is_configured():
     print("\n" + "="*60)
-    print("  ⚠️  IBM GRANITE IS NOT CONNECTED")
+    print("  !  IBM GRANITE IS NOT CONNECTED")
     print("="*60)
     print("  To enable real AI responses, create a .env file with:")
     print()
     print("    WATSONX_API_KEY=<your IBM Cloud API key>")
     print("    WATSONX_PROJECT_ID=<your watsonx.ai project ID>")
     print("    WATSONX_URL=https://us-south.ml.cloud.ibm.com")
-    print("    GRANITE_MODEL_ID=ibm/granite-13b-instruct-v2")
+    print("    GRANITE_MODEL_ID=ibm/granite-3-8b-instruct")
     print()
     print("  Get credentials:")
-    print("    API Key     → https://cloud.ibm.com/iam/apikeys")
-    print("    Project ID  → https://dataplatform.cloud.ibm.com/projects")
+    print("    API Key     -> https://cloud.ibm.com/iam/apikeys")
+    print("    Project ID  -> https://dataplatform.cloud.ibm.com/projects")
     print("="*60)
 else:
-    print("\n  ✅ IBM Granite credentials are configured — real AI responses active.")
+    print("\n  [OK] IBM Granite credentials are configured — real AI responses active.")

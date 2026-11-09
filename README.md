@@ -15,7 +15,7 @@ Powered by **Edunet Foundation**  via **IBM watsonx.ai**
 
 ## What It Does
 
-Students often struggle with academic materials written above their proficiency level. This app uses IBM Granite to automatically transform any educational content into learner-appropriate language — in a single AI call — for three levels:
+Students often struggle with academic materials written above their proficiency level. This app uses IBM Granite to create a learner-appropriate study pack in one AI call for three levels:
 
 | Level | Target Learner |
 |---|---|
@@ -23,7 +23,7 @@ Students often struggle with academic materials written above their proficiency 
 | **Intermediate** | Age 15–17, some subject knowledge |
 | **Advanced** | University student, technically accurate explanation |
 
-For any piece of academic content the AI returns **six structured sections**:
+The study pack includes **six structured notes sections**, **five multiple-choice questions**, and **five revision questions**. The notes sections are:
 
 | Section | Description |
 |---|---|
@@ -34,7 +34,7 @@ For any piece of academic content the AI returns **six structured sections**:
 | Short Summary | 3–5 sentence concise overview |
 | Difficult Words | Glossary of technical terms with simple definitions |
 
-**Bonus:** MCQ quiz generation (5 questions), revision question generation (5 questions), downloadable results, and session history.
+**Additional tools:** A standalone interactive quiz generator, downloadable study packs, and session history.
 
 ---
 
@@ -42,7 +42,7 @@ For any piece of academic content the AI returns **six structured sections**:
 
 | Page | What You Can Do |
 |---|---|
-| **Home** | Quick-start — paste or upload content and simplify in one click |
+| **Home** | Paste a question, topic, or notes (or upload TXT/PDF), choose a level, and get a complete study pack |
 | **Simplify** | Full input interface with three tabs: Paste Text · Upload File · Sample Passage |
 | **Study Materials** | Browse the Kaggle dataset passages and compare AI output with real student summaries |
 | **Quiz** | Generate and take an interactive MCQ quiz from any content |
@@ -123,13 +123,14 @@ If IBM credentials are not configured, the app automatically runs in **Demo Mode
 course-simplifier/
 ├── app.py              ← Streamlit frontend — all 6 pages, UI, session state
 ├── granite.py          ← IBM Granite / watsonx.ai integration
-│                         IAM token caching, combined prompt, demo mode
+│                         IAM token caching, structured study packs, demo mode
 ├── dataset.py          ← Kaggle CommonLit dataset processing
 │                         CSV loading, passage extraction, student summaries
 ├── requirements.txt    ← Python dependencies
 ├── .env.example        ← Credentials template (safe to commit)
 ├── .env                ← Your actual credentials (DO NOT commit — gitignored)
 ├── test_integration.py ← Integration tests for granite.py and dataset.py
+├── test_granite_flow.py← Offline tests for study-pack parsing and request flow
 └── README.md           ← This file
 ```
 
@@ -160,7 +161,7 @@ Streamlit UI  (app.py)
 - **API version:** `2024-05-31`
 - **Endpoint:** `POST {WATSONX_URL}/ml/v1/text/generation`
 - **Decoding:** greedy, `repetition_penalty=1.05`, `stop_sequences=["---END---"]`
-- **Single combined prompt:** all 6 simplification sections are requested in one API call (not 6 separate calls) — reduces latency and token usage
+- **Single structured response:** notes, five MCQs, and five revision questions are requested together as JSON in one API call; responses are validated before display
 - **IAM token caching:** the bearer token is cached for its ~60-minute lifetime; only one `/identity/token` call per session
 - **Lazy credential loading:** credentials are read inside functions, not at import time, so `load_dotenv()` always runs first
 

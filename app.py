@@ -54,14 +54,42 @@ CSS = """
 
 /* ── Global ── */
 html, body, .stApp {
-  background:
-    radial-gradient(circle at top, rgba(124,92,255,.10), transparent 35%),
-    linear-gradient(180deg, var(--bg-strong) 0%, var(--bg) 100%);
+  background: #05070d !important;
   font-family: "Inter","Segoe UI",system-ui,sans-serif !important;
-  color: var(--text) !important;
+  color: #f3f6ff !important;
 }
 ::selection {
-  background: rgba(90,63,192,.20);
+  background: rgba(132, 94, 247, 0.32);
+}
+header[data-testid="stHeader"],
+section[data-testid="stSidebar"],
+div[data-testid="stSidebarNav"],
+[data-testid="collapsedControl"],
+div[data-testid="stDecoration"],
+.topnav {
+  display: none !important;
+}
+.block-container {
+  padding-top: 18px !important;
+}
+.stApp p,
+.stTextInput input,
+.stTextInput input::placeholder,
+.stTextInput label,
+.stTextInput span,
+.stTextInput p,
+.stFileUploader label,
+.stFileUploader span,
+.stFileUploader p,
+.stButton button,
+.stButton span,
+.stButton p,
+.stAlert p,
+.stInfo p,
+.stSuccess p,
+.stWarning p,
+.stError p {
+  color: #f3f6ff !important;
 }
 .stApp p,
 .stApp span,
@@ -69,12 +97,11 @@ html, body, .stApp {
 .stApp label,
 .stApp li,
 .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6 {
-  color: var(--text) !important;
+  color: #f3f6ff !important;
 }
 .stApp .stCaption p,
 .stApp small,
-.stApp .stMarkdown small { color: var(--muted) !important; }
-
+.stApp .stMarkdown small { color: #dfe7ff !important; }
 footer, #MainMenu, header { visibility: hidden !important; height: 0 !important; }
 .block-container {
   padding: 0 !important;
@@ -346,20 +373,20 @@ div[data-testid="stExpander"] summary p {
 [data-baseweb="option"]:hover { background: var(--purple-soft) !important; }
 
 .stTextInput input {
-  border: 1.5px solid #dde4f7 !important;
-  border-radius: 12px !important;
-  background: linear-gradient(180deg, #fafbff 0%, #f4f7ff 100%) !important;
-  color: var(--text) !important;
-  font-size: .94rem !important;
-  padding: 10px 14px !important;
-  box-shadow: inset 0 1px 2px rgba(26,35,64,.04);
+  border: 1.5px solid rgba(255,255,255,0.18) !important;
+  border-radius: 18px !important;
+  background: linear-gradient(180deg, #f5f7fb 0%, #eef2f7 100%) !important;
+  color: #111827 !important;
+  font-size: 1rem !important;
+  padding: 14px 18px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 6px 18px rgba(15,23,42,0.12);
 }
 .stTextInput input:focus {
-  border-color: var(--purple) !important;
-  background: #fff !important;
-  box-shadow: 0 0 0 4px rgba(90,63,192,.10), inset 0 1px 2px rgba(26,35,64,.04) !important;
+  border-color: rgba(126, 92, 255, 0.95) !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 4px rgba(126,92,255,0.18), inset 0 1px 0 rgba(255,255,255,0.25) !important;
 }
-.stTextInput input::placeholder { color: #aab0c8 !important; }
+.stTextInput input::placeholder { color: #667085 !important; }
 
 .stRadio label, .stRadio label p, .stRadio span { color: var(--text) !important; }
 
@@ -393,32 +420,56 @@ div[data-testid="stExpander"] > div:first-child { color: var(--navy) !important;
 [data-testid="stFileUploader"] label,
 [data-testid="stFileUploader"] p,
 [data-testid="stFileUploader"] span {
-  color: var(--navy) !important;
+  color: #f3f6ff !important;
   font-weight: 600 !important;
 }
 [data-testid="stFileUploaderDropzone"] {
-  border: 1.5px dashed var(--border) !important;
-  background: #f7f8fc !important;
-  color: var(--navy) !important;
+  border: 1.5px dashed rgba(255,255,255,0.16) !important;
+  background: rgba(255,255,255,0.05) !important;
+  color: #f3f6ff !important;
+  border-radius: 18px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+div[data-testid="stFileUploader"] > section {
+  border-radius: 18px !important;
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
 }
 [data-baseweb="popover"] * { color: var(--text) !important; background: #fff; }
 
+div[data-testid="stFormSubmitButton"] > button {
+  background: rgba(255,255,255,0.07) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  color: #ffffff !important;
+  border-radius: 16px !important;
+  padding: 0 !important;
+  min-width: 56px !important;
+  width: 56px !important;
+  height: 56px !important;
+  font-size: 1.2rem !important;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.2) !important;
+}
+div[data-testid="stFormSubmitButton"] > button:hover {
+  background: rgba(255,255,255,0.12) !important;
+  transform: translateY(-1px);
+}
+
 .stButton > button {
-  background: linear-gradient(135deg, var(--purple-btn) 0%, var(--purple-strong) 100%) !important;
-  color: #fff !important;
+  background: linear-gradient(135deg, #7a5af8 0%, #5a42d8 100%) !important;
+  color: #ffffff !important;
   border: none !important;
   border-radius: 14px !important;
   padding: 14px 28px !important;
-  font-size: 1.04rem !important;
+  font-size: 1.05rem !important;
   font-weight: 800 !important;
   letter-spacing: .01em;
   width: 100%;
-  box-shadow: 0 12px 28px rgba(90,63,192,.28) !important;
+  box-shadow: 0 12px 28px rgba(122,90,248,.28) !important;
   transition: filter .18s ease, transform .12s ease, box-shadow .18s ease;
 }
 .stButton > button:hover {
   filter: brightness(1.08);
-  box-shadow: 0 16px 32px rgba(90,63,192,.34) !important;
+  box-shadow: 0 16px 32px rgba(122,90,248,.34) !important;
   transform: translateY(-1px);
 }
 .stButton > button:active { transform: none; }
@@ -435,44 +486,51 @@ div[data-testid="stExpander"] > div:first-child { color: var(--navy) !important;
 .section-label {
   font-size: 1.08rem;
   font-weight: 800;
-  color: var(--navy);
+  color: #8ab9ff;
   margin: 0 0 18px;
 }
 
 .feat-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 40px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin: 12px 0 42px;
 }
 .feat-item {
-  background: linear-gradient(180deg, #ffffff 0%, #fbfbff 100%);
-  border-radius: var(--radius);
-  border: 1.5px solid var(--border);
-  padding: 22px 22px 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(247,248,255,1) 100%);
+  border-radius: 28px;
+  border: 1px solid rgba(255,255,255,.12);
+  padding: 26px 28px 22px;
   cursor: pointer;
-  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
-  box-shadow: var(--shadow-soft);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  box-shadow: 0 10px 28px rgba(10, 12, 20, 0.28), inset 0 1px 0 rgba(255,255,255,.5);
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .feat-item:hover {
-  border-color: var(--purple);
-  box-shadow: 0 14px 28px rgba(90,63,192,.12);
-  transform: translateY(-2px);
+  border-color: rgba(138, 110, 255, 0.8);
+  box-shadow: 0 16px 32px rgba(122, 92, 255, 0.18), inset 0 1px 0 rgba(255,255,255,.5);
+  transform: translateY(-3px);
 }
 .feat-item-icon {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   display: block;
+  width: 38px;
+  height: 38px;
+  color: #765cf0 !important;
 }
-.feat-item-title {
-  font-size: 1.02rem;
+.stApp .feat-item-title {
+  font-size: 1.12rem;
   font-weight: 800;
-  color: var(--navy);
-  margin-bottom: 6px;
+  color: #111827 !important;
+  margin-bottom: 8px;
 }
-.feat-item-desc {
-  font-size: .87rem;
-  color: var(--muted);
-  line-height: 1.55;
+.stApp .feat-item-desc {
+  font-size: 1rem;
+  color: #4b5563 !important;
+  line-height: 1.5;
 }
 
 .res-card {
@@ -554,6 +612,124 @@ div[data-testid="stExpander"] {
   background: linear-gradient(180deg, #ffffff 0%, #fafbff 100%) !important;
   box-shadow: var(--shadow-soft);
 }
+
+div[data-testid="stChatInput"] {
+  border-radius: 999px !important;
+  background: rgba(38, 38, 38, 0.96) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04), 0 8px 18px rgba(0,0,0,0.2) !important;
+  padding: 10px 16px 10px 18px !important;
+  max-width: 100% !important;
+  min-height: 68px !important;
+}
+div[data-testid="stChatInput"] > div {
+  align-items: center !important;
+}
+div[data-testid="stChatInput"] textarea,
+div[data-testid="stChatInput"] textarea::placeholder,
+div[data-testid="stChatInput"] label,
+div[data-testid="stChatInput"] span,
+div[data-testid="stChatInput"] p {
+  color: rgba(255,255,255,0.82) !important;
+  background: transparent !important;
+  border: none !important;
+  font-size: 1.05rem !important;
+}
+div[data-testid="stChatInput"] textarea {
+  min-height: 24px !important;
+  font-size: 1.05rem !important;
+  padding: 0 !important;
+}
+div[data-testid="stChatInput"] button {
+  background: rgba(255,255,255,0.18) !important;
+  border: none !important;
+  color: #ffffff !important;
+  border-radius: 50% !important;
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+.chat-prompt-heading {
+  margin: 18px 0 8px;
+  color: #f3f6ff !important;
+  font-size: clamp(2rem, 4vw, 2.7rem);
+  font-weight: 850;
+  letter-spacing: -.045em;
+  line-height: 1.12;
+}
+.chat-prompt-subtitle {
+  margin: 0 0 18px;
+  color: #aab4ca !important;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.st-key-home-chat-row {
+  background: linear-gradient(145deg, rgba(20,25,42,.96), rgba(12,16,29,.98));
+  border: 1px solid rgba(146,127,255,.32) !important;
+  border-radius: 24px;
+  padding: 14px 18px !important;
+  box-shadow: 0 16px 38px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.05);
+}
+.st-key-home-chat-row .stTextInput input {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #f8f9ff !important;
+  font-size: 1.05rem !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.st-key-home-chat-row .stTextInput input::placeholder {
+  color: #aeb8cc !important;
+}
+.st-key-home-chat-row [data-testid="stFormSubmitButton"] button {
+  background: rgba(255,255,255,0.16) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  border-radius: 14px !important;
+  width: 46px !important;
+  min-width: 46px !important;
+  height: 46px !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  transition: background .18s ease, transform .18s ease;
+}
+.st-key-home-chat-row [data-testid="stFormSubmitButton"] button:hover {
+  background: rgba(255,255,255,.24) !important;
+  transform: translateY(-1px);
+}
+.st-key-send_prompt_btn button {
+  background: linear-gradient(135deg, #8468ff, #6347e8) !important;
+  border-color: transparent !important;
+  box-shadow: 0 8px 18px rgba(99,71,232,.28) !important;
+}
+.st-key-home_file_upload [data-testid="stFileUploader"] {
+  margin: 0 !important;
+}
+.st-key-home_file_upload [data-testid="stFileUploaderDropzone"] {
+  background: transparent !important;
+  border: none !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+}
+.st-key-home_file_upload [data-testid="stFileUploaderDropzone"] button {
+  min-height: 46px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
+  background: rgba(255,255,255,.12) !important;
+  color: #fff !important;
+}
+.st-key-home_file_upload [data-testid="stFileUploaderDropzone"] label,
+.st-key-home_file_upload [data-testid="stFileUploaderDropzone"] span,
+.st-key-home_file_upload [data-testid="stFileUploaderDropzone"] p {
+  color: #fff !important;
+  font-size: .82rem !important;
+  font-weight: 700 !important;
+}
+
 .stAlert { border-radius: 12px !important; }
 
 .ai-badge, .ai-badge * {
@@ -641,6 +817,39 @@ def build_download_text(content_input, level, results, mcqs, revq):
     return "\n".join(lines)
 
 
+def read_uploaded_text(uploaded):
+    """Extract text from the supported home-page upload types."""
+    filename = uploaded.name.lower()
+    if filename.endswith(".txt"):
+        return uploaded.getvalue().decode("utf-8-sig").strip()
+    if filename.endswith(".pdf"):
+        import pypdf
+
+        try:
+            reader = pypdf.PdfReader(io.BytesIO(uploaded.getvalue()))
+            content = "\n".join(page.extract_text() or "" for page in reader.pages).strip()
+        except pypdf.errors.PdfReadError as exc:
+            raise ValueError(f"Could not read the PDF: {exc}") from exc
+        if not content:
+            raise ValueError("No selectable text was found in the PDF. Paste the notes or try a text-based PDF.")
+        return content
+    raise ValueError("Upload a TXT or PDF file. Image uploads are not supported yet.")
+
+
+def render_study_pack(pack):
+    left, right = st.columns(2)
+    for index, (section, text) in enumerate(pack["sections"].items()):
+        with (left if index % 2 == 0 else right):
+            with st.container(border=True):
+                st.markdown(f"#### {section}")
+                st.markdown(text)
+
+    with st.expander("🧠 MCQ Quiz Questions"):
+        st.text(pack["mcqs"])
+    with st.expander("📚 Revision Questions"):
+        st.text(pack["revision_questions"])
+
+
 def _parse_mcqs(raw: str):
     questions = []
     for block in [b.strip() for b in raw.split("\n\n") if b.strip()]:
@@ -717,19 +926,6 @@ for pg in NAV_PAGES:
         f'<span class="topnav-link {active_cls}" '
         f'onclick="">{NAV_DISPLAY.get(pg, pg)}</span>'
     )
-
-st.markdown(
-    f'<div class="topnav">'
-    f'  <div class="topnav-logo">'
-    f'    {_ICON_SHIELD}'
-    f'    <span>Course Simplifier</span>'
-    f'  </div>'
-    f'  <div class="topnav-links">'
-    f'    <span class="topnav-badge">AI Learning</span>'
-    f'  </div>'
-    f'</div>',
-    unsafe_allow_html=True,
-)
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
 with st.sidebar:
@@ -893,74 +1089,6 @@ st.markdown('<div class="page-wrap">', unsafe_allow_html=True)
 # ══════════════════════════════════════════════════════════════════════════════
 if cur_page == "Home":
 
-    # Hero text (dark on light background — matches reference)
-    st.markdown(
-        '<div style="padding:8px 0 0">'
-        '<h1 class="hero-title">Learn Smarter. Understand Better.</h1>'
-        '<p class="hero-sub">Turn complex academic concepts into simple explanations with AI.</p>'
-        '</div>',
-        unsafe_allow_html=True,
-    )
-
-    # ── Main input card ────────────────────────────────────────────────────────
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
-    st.markdown('<div class="main-card-label">What would you like to simplify?</div>',
-                unsafe_allow_html=True)
-
-    home_content = st.text_area(
-        "home_ta",
-        height=130,
-        placeholder="Paste your notes, textbook content or difficult topic here...",
-        label_visibility="collapsed",
-        key="home_textarea",
-    )
-
-    # Pill row: Upload PDF pill + Level pill (selectbox styled as pill)
-    st.markdown('<div class="pill-row">', unsafe_allow_html=True)
-    p1, p2, p3 = st.columns([1.6, 1.6, 4])
-    with p1:
-        upload_pill = st.file_uploader(
-            "upload_pdf_pill",
-            type=["txt", "pdf"],
-            key="home_pdf",
-            label_visibility="collapsed",
-        )
-    with p2:
-        home_level = st.selectbox(
-            "level_pill",
-            ["Beginner", "Intermediate", "Advanced"],
-            index=["Beginner","Intermediate","Advanced"].index(
-                st.session_state.last_level
-            ),
-            label_visibility="collapsed",
-            key="home_level_sel",
-        )
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    # Handle PDF upload on home page
-    if upload_pill:
-        if upload_pill.type == "text/plain":
-            home_content = upload_pill.read().decode("utf-8", errors="replace")
-        elif upload_pill.type == "application/pdf":
-            try:
-                import pypdf
-                reader = pypdf.PdfReader(io.BytesIO(upload_pill.read()))
-                home_content = "\n".join(p.extract_text() or "" for p in reader.pages)
-            except Exception:
-                st.warning("Could not read PDF. Please try a TXT file or paste content.")
-
-    simplify_home_btn = st.button("✦ Simplify My Content", use_container_width=True, key="home_btn")
-    st.markdown("</div>", unsafe_allow_html=True)  # close main-card
-
-    if simplify_home_btn:
-        if not home_content.strip() or len(home_content.strip()) < 30:
-            st.warning("Please paste some content (at least a few sentences) before simplifying.")
-        else:
-            st.session_state.simplify_content = home_content
-            st.session_state.last_level       = home_level
-            st.session_state.pending_page     = "Simplify Content"
-            st.rerun()
-
     # ── Feature cards 2×2 grid ─────────────────────────────────────────────────
     st.markdown('<div class="section-label">What would you like to learn today?</div>',
                 unsafe_allow_html=True)
@@ -995,6 +1123,128 @@ if cur_page == "Home":
         f'</div>',
         unsafe_allow_html=True,
     )
+
+    st.markdown(
+        '<div class="chat-prompt-heading">What would you like to simplify?</div>'
+        '<div class="chat-prompt-subtitle">Share a question, topic, or set of notes to get started.</div>',
+        unsafe_allow_html=True,
+    )
+
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
+
+    level_col, _ = st.columns([1.5, 3])
+    with level_col:
+        home_level = st.selectbox(
+            "Learning level",
+            ["Beginner", "Intermediate", "Advanced"],
+            index=["Beginner", "Intermediate", "Advanced"].index(
+                st.session_state.last_level
+            ),
+            key="home_learning_level",
+        )
+
+    with st.container(key="home-chat-row", border=True):
+        with st.form("home_prompt_form", clear_on_submit=True):
+            input_col, upload_col, mic_col, send_col = st.columns([7, 1.35, 1, 1])
+
+            with input_col:
+                user_input = st.text_input(
+                    "Tell Me what to simplify",
+                    placeholder="Tell Me what to simplify",
+                    key="home_prompt_input",
+                    label_visibility="collapsed",
+                )
+
+            with upload_col:
+                uploaded = st.file_uploader(
+                    "＋",
+                    type=["txt", "pdf"],
+                    label_visibility="collapsed",
+                    key="home_file_upload",
+                )
+
+            with mic_col:
+                voice_click = st.form_submit_button("🎤", key="voice_btn", width="stretch")
+
+            with send_col:
+                send_click = st.form_submit_button("↑", key="send_prompt_btn", width="stretch")
+
+            if voice_click:
+                st.info("🎙️ Voice input is ready for integration.")
+
+            if send_click:
+                text = user_input.strip()
+                upload_error = False
+                try:
+                    uploaded_text = read_uploaded_text(uploaded) if uploaded else ""
+                except (ImportError, ValueError) as exc:
+                    st.error(str(exc))
+                    uploaded_text = ""
+                    upload_error = True
+
+                if text or uploaded_text:
+                    content = "\n\n".join(
+                        part for part in (text, uploaded_text) if part
+                    )
+                    user_message = text or f"Uploaded notes: {uploaded.name}"
+                    if text and uploaded_text:
+                        user_message = f"{text}\n\nUploaded notes: {uploaded.name}"
+                    st.session_state.chat_history.append(
+                        {"role": "user", "content": user_message}
+                    )
+                    st.session_state.last_level = home_level
+                    try:
+                        with st.spinner(
+                            "IBM Granite is preparing your study pack..."
+                            if granite.is_configured()
+                            else "Preparing a study-pack preview..."
+                        ):
+                            study_pack = granite.generate_study_pack(content, home_level)
+                        st.session_state.chat_history.append({
+                            "role": "assistant",
+                            "content": "Study pack",
+                            "level": home_level,
+                            "source_content": content,
+                            "study_pack": study_pack,
+                        })
+                        preview = content[:60].replace("\n", " ")
+                        st.session_state.history.insert(0, {
+                            "title": preview + ("…" if len(content) > 60 else ""),
+                            "level": home_level,
+                            "results": study_pack["sections"],
+                            "mcqs": study_pack["mcqs"],
+                            "revq": study_pack["revision_questions"],
+                        })
+                        if len(st.session_state.history) > 20:
+                            st.session_state.history = st.session_state.history[:20]
+                    except (RuntimeError, ValueError) as exc:
+                        st.error(f"Could not generate a response: {exc}")
+                elif not upload_error:
+                    st.warning("Enter a topic or question, or upload a TXT/PDF file.")
+
+    for message_index, message in enumerate(st.session_state.chat_history):
+        with st.chat_message(message["role"]):
+            if message["role"] == "assistant" and "study_pack" in message:
+                if not granite.is_configured():
+                    st.info("Preview mode — connect IBM Granite for AI-generated responses.")
+                st.caption(f"Study pack · {message['level']}")
+                render_study_pack(message["study_pack"])
+                st.download_button(
+                    "Download study pack",
+                    data=build_download_text(
+                        message["source_content"],
+                        message["level"],
+                        message["study_pack"]["sections"],
+                        message["study_pack"]["mcqs"],
+                        message["study_pack"]["revision_questions"],
+                    ),
+                    file_name=f"study_pack_{message['level'].lower()}.txt",
+                    mime="text/plain",
+                    key=f"home_study_pack_download_{message_index}",
+                )
+            else:
+                st.write(message["content"])
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1079,8 +1329,8 @@ elif cur_page == "Simplify Content":
         st.session_state.simplify_content = ""
 
     if s_btn:
-        if not content_input.strip() or len(content_input.strip()) < 30:
-            st.warning("⚠️ Please provide some content (at least a few sentences).")
+        if not content_input.strip():
+            st.warning("⚠️ Please provide notes, a topic, or a question.")
         else:
             st.session_state.last_level   = s_level
             st.session_state.last_content = content_input
@@ -1096,49 +1346,41 @@ elif cur_page == "Simplify Content":
 
             divider(f"AI RESULTS · {s_level.upper()}")
 
-            with st.spinner("IBM Granite is thinking…" if granite.is_configured() else "Generating preview…"):
-                results = granite.simplify_content(content_input, s_level)
+            try:
+                with st.spinner(
+                    "IBM Granite is preparing your study pack..."
+                    if granite.is_configured()
+                    else "Generating preview..."
+                ):
+                    study_pack = granite.generate_study_pack(content_input, s_level)
+            except (RuntimeError, ValueError) as exc:
+                st.error(f"Could not generate a study pack: {exc}")
+            else:
+                render_study_pack(study_pack)
+                st.download_button(
+                    "⬇️ Download Study Notes (TXT)",
+                    data=build_download_text(
+                        content_input,
+                        s_level,
+                        study_pack["sections"],
+                        study_pack["mcqs"],
+                        study_pack["revision_questions"],
+                    ),
+                    file_name=f"notes_{s_level.lower()}.txt",
+                    mime="text/plain",
+                    use_container_width=True,
+                )
 
-            ICONS = {
-                "Simple Definition":     ("📖", "#4f8ef7"),
-                "Easy Explanation":      ("🪜", "#7c5cd8"),
-                "Real-Life Example":     ("💡", "#d97706"),
-                "Important Exam Points": ("📋", "#16a34a"),
-                "Short Summary":         ("📝", "#0891b2"),
-                "Difficult Words":       ("🔤", "#db2777"),
-            }
-            rc1, rc2 = st.columns(2)
-            for i, (sec, txt) in enumerate(results.items()):
-                ico, clr = ICONS.get(sec, ("•","#5a3fc0"))
-                with (rc1 if i % 2 == 0 else rc2):
-                    res_card(ico, sec, txt, clr)
-
-            with st.spinner("Generating quiz…"):
-                mcqs = granite.generate_mcqs(content_input, s_level)
-            with st.spinner("Generating revision questions…"):
-                revq = granite.generate_revision_questions(content_input, s_level)
-
-            with st.expander("🧠 MCQ Quiz Questions"):
-                st.text(mcqs)
-            with st.expander("📚 Revision Questions"):
-                st.text(revq)
-
-            st.download_button(
-                "⬇️ Download Study Notes (TXT)",
-                data=build_download_text(content_input, s_level, results, mcqs, revq),
-                file_name=f"notes_{s_level.lower()}.txt",
-                mime="text/plain",
-                use_container_width=True,
-            )
-
-            # Save history
-            preview = content_input[:60].replace("\n"," ")
-            st.session_state.history.insert(0, {
-                "title": preview + ("…" if len(content_input)>60 else ""),
-                "level": s_level, "results": results, "mcqs": mcqs, "revq": revq,
-            })
-            if len(st.session_state.history) > 20:
-                st.session_state.history = st.session_state.history[:20]
+                preview = content_input[:60].replace("\n", " ")
+                st.session_state.history.insert(0, {
+                    "title": preview + ("…" if len(content_input) > 60 else ""),
+                    "level": s_level,
+                    "results": study_pack["sections"],
+                    "mcqs": study_pack["mcqs"],
+                    "revq": study_pack["revision_questions"],
+                })
+                if len(st.session_state.history) > 20:
+                    st.session_state.history = st.session_state.history[:20]
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1204,25 +1446,20 @@ elif cur_page == "Study Materials":
             st.markdown(ai_badge, unsafe_allow_html=True)
             if not granite.is_configured():
                 st.info("Preview mode active.", icon="ℹ️")
-            with st.spinner("Simplifying…"):
-                results = granite.simplify_content(passage["text"], ml_level)
-            ICONS = {
-                "Simple Definition":     ("📖","#4f8ef7"),
-                "Easy Explanation":      ("🪜","#7c5cd8"),
-                "Real-Life Example":     ("💡","#d97706"),
-                "Important Exam Points": ("📋","#16a34a"),
-                "Short Summary":         ("📝","#0891b2"),
-                "Difficult Words":       ("🔤","#db2777"),
-            }
-            rc1, rc2 = st.columns(2)
-            for i,(sec,txt) in enumerate(results.items()):
-                ico, clr = ICONS.get(sec, ("•","#5a3fc0"))
-                with (rc1 if i%2==0 else rc2):
-                    res_card(ico, sec, txt, clr)
-            st.session_state.history.insert(0, {
-                "title": passage["title"], "level": ml_level,
-                "results": results, "mcqs": "", "revq": "",
-            })
+            try:
+                with st.spinner("Preparing your study pack…"):
+                    study_pack = granite.generate_study_pack(passage["text"], ml_level)
+            except (RuntimeError, ValueError) as exc:
+                st.error(f"Could not simplify this passage: {exc}")
+            else:
+                render_study_pack(study_pack)
+                st.session_state.history.insert(0, {
+                    "title": passage["title"],
+                    "level": ml_level,
+                    "results": study_pack["sections"],
+                    "mcqs": study_pack["mcqs"],
+                    "revq": study_pack["revision_questions"],
+                })
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1253,15 +1490,28 @@ elif cur_page == "Quiz Generator":
         if not qz_content.strip() or len(qz_content.strip()) < 30:
             st.warning("Please paste at least a few sentences to generate a quiz.")
         else:
-            if not granite.is_configured():
-                st.info("Preview mode — showing sample questions.", icon="ℹ️")
-            with st.spinner("Generating quiz…"):
-                raw = granite.generate_mcqs(qz_content, qz_level)
-            st.session_state.quiz_parsed    = _parse_mcqs(raw)
-            st.session_state.quiz_raw       = raw
-            st.session_state.quiz_level     = qz_level
-            st.session_state.quiz_answers   = {}
-            st.session_state.quiz_submitted = False
+            try:
+                if not granite.is_configured():
+                    st.info("Preview mode — showing sample questions.", icon="ℹ️")
+                with st.spinner("Generating quiz…"):
+                    raw = granite.generate_mcqs(qz_content, qz_level)
+                parsed_questions = _parse_mcqs(raw)
+                if len(parsed_questions) != 5 or any(
+                    set(question["options"]) != {"A", "B", "C", "D"}
+                    or question["answer"] not in {"A", "B", "C", "D"}
+                    for question in parsed_questions
+                ):
+                    raise RuntimeError("The quiz response did not contain five complete multiple-choice questions.")
+            except (RuntimeError, ValueError) as exc:
+                st.session_state.quiz_parsed = None
+                st.session_state.quiz_raw = ""
+                st.error(f"Could not generate the quiz: {exc}")
+            else:
+                st.session_state.quiz_parsed    = parsed_questions
+                st.session_state.quiz_raw       = raw
+                st.session_state.quiz_level     = qz_level
+                st.session_state.quiz_answers   = {}
+                st.session_state.quiz_submitted = False
 
     if st.session_state.get("quiz_parsed"):
         questions = st.session_state.quiz_parsed
