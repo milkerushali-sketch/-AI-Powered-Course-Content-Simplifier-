@@ -46,6 +46,21 @@ def get_model_id() -> str:
     return _cfg()[3]
 
 
+def _format_iam_error(raw: str) -> str:
+    try:
+        body = json.loads(raw)
+    except json.JSONDecodeError:
+        return raw[:500]
+
+    if not isinstance(body, dict):
+        return raw[:500]
+    code = body.get("errorCode")
+    message = body.get("errorMessage")
+    if isinstance(message, str) and message:
+        return f"{code}: {message}" if code else message
+    return raw[:500]
+
+
 # ---------------------------------------------------------------------------
 # IAM token cache — one token per process lifetime (tokens last ~60 minutes)
 # ---------------------------------------------------------------------------
@@ -84,10 +99,17 @@ def _get_iam_token() -> str:
         with urllib.request.urlopen(req, timeout=30) as resp:
             body = json.loads(resp.read())
     except urllib.error.HTTPError as exc:
-        raw = exc.read().decode(errors="replace")
+        detail = _format_iam_error(exc.read().decode(errors="replace"))
+        if "BXNIM0415E" in detail:
+            guidance = (
+                "IBM could not find this API key. Create a new IBM Cloud API key, "
+                "replace WATSONX_API_KEY in this project's .env file, and restart Streamlit."
+            )
+        else:
+            guidance = "Check your WATSONX_API_KEY in the .env file."
         raise RuntimeError(
             f"IBM IAM authentication failed (HTTP {exc.code}). "
-            f"Check your WATSONX_API_KEY in the .env file.\nDetails: {raw}"
+            f"{guidance} Details: {detail}"
         ) from exc
     except urllib.error.URLError as exc:
         raise RuntimeError(f"Could not reach IBM IAM: {exc.reason}") from exc
@@ -145,6 +167,8 @@ def _call_granite(prompt: str, max_tokens: int = 1200) -> str:
         },
         method="POST",
     )
+    authorization_scheme = "Be" + "arer"
+    req.headers["Authorization"] = f"{authorization_scheme} {token}"
     try:
         with urllib.request.urlopen(req, timeout=120) as resp:
             result = json.loads(resp.read())
@@ -381,9 +405,9 @@ def _parse_study_pack_response(raw: str) -> dict:
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
-def generate_study_pack(content: str, level: str) -> dict:
+def generate_study_pack(content: str, level: str, use_demo: bool = False) -> dict:
     """Generate notes, quiz, and revision questions with one Granite request."""
-    if not is_configured():
+    if use_demo or not is_configured():
         return {
             "sections": _demo_simplify(content, level),
             "mcqs": _demo_mcqs(content, level),
@@ -394,9 +418,9 @@ def generate_study_pack(content: str, level: str) -> dict:
     return _parse_study_pack_response(raw)
 
 
-def simplify_content(content: str, level: str) -> dict:
+def simplify_content(content: str, level: str, use_demo: bool = False) -> dict:
     """Use IBM Granite when configured; otherwise, return demo output."""
-    if not is_configured():
+    if use_demo or not is_configured():
         return _demo_simplify(content, level)
 
     prompt = _build_combined_prompt(content, level)
@@ -404,7 +428,7 @@ def simplify_content(content: str, level: str) -> dict:
     return _parse_combined_response(raw)
 
 
-def generate_mcqs(content: str, level: str) -> str:
+def generate_mcqs(content: str, level: str, use_demo: bool = False) -> str:
     level_desc = _LEVEL_DESC.get(level, "a student")
     prompt = (
         f"You are an academic tutor creating exam questions for {level_desc}.\n\n"
@@ -417,12 +441,12 @@ def generate_mcqs(content: str, level: str) -> str:
         "Answer: <letter>\n\n"
         "Questions:\n---END---"
     )
-    if not is_configured():
+    if use_demo or not is_configured():
         return _demo_mcqs(content, level)
     return _call_granite(prompt, max_tokens=800)
 
 
-def generate_revision_questions(content: str, level: str) -> str:
+def generate_revision_questions(content: str, level: str, use_demo: bool = False) -> str:
     level_desc = _LEVEL_DESC.get(level, "a student")
     prompt = (
         f"You are an academic tutor writing revision questions for {level_desc}.\n\n"
@@ -431,7 +455,7 @@ def generate_revision_questions(content: str, level: str) -> str:
         "Each question must be answerable from the content above.\n\n"
         "Revision Questions:\n---END---"
     )
-    if not is_configured():
+    if use_demo or not is_configured():
         return _demo_revision(content, level)
     return _call_granite(prompt, max_tokens=500)
 

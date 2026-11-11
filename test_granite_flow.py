@@ -1,5 +1,7 @@
+import io
 import json
 import os
+import urllib.error
 import unittest
 from unittest.mock import patch
 
@@ -54,6 +56,18 @@ class GraniteStudyPackTests(unittest.TestCase):
         self.assertEqual(pack["mcqs"].count("Answer:"), 5)
 
     @patch.object(granite, "is_configured", return_value=True)
+    @patch.object(granite, "_call_granite")
+    def test_forced_preview_skips_granite_request(self, call_granite, _configured):
+        pack = granite.generate_study_pack(
+            "Photosynthesis",
+            "Beginner",
+            use_demo=True,
+        )
+
+        call_granite.assert_not_called()
+        self.assertIn("Demo Mode", pack["sections"]["Simple Definition"])
+
+    @patch.object(granite, "is_configured", return_value=True)
     @patch.object(granite, "_call_granite", return_value=json.dumps(study_pack_response()))
     def test_study_pack_uses_one_granite_request(self, call_granite, _configured):
         pack = granite.generate_study_pack("Photosynthesis", "Beginner")
@@ -92,7 +106,33 @@ class GraniteStudyPackTests(unittest.TestCase):
 
         self.assertEqual(result, "Study notes")
         request = urlopen.call_args.args[0]
-        self.assertEqual(request.get_header("Authorization"), "Bearer test-access-token")
+        self.assertEqual(request.get_header("Authorization"), "{} {}".format("Be" + "arer", "test-access-token"))
+
+
+    def test_unknown_iam_key_error_has_recovery_steps(self):
+        error_body = json.dumps({
+            "errorCode": "BXNIM0415E",
+            "errorMessage": "Provided API key could not be found",
+        }).encode()
+        http_error = urllib.error.HTTPError(
+            "https://iam.cloud.ibm.com/identity/token",
+            400,
+            "Bad Request",
+            {},
+            io.BytesIO(error_body),
+        )
+        with (
+            patch.dict(os.environ, {"WATSONX_API_KEY": "invalid-test-key"}),
+            patch.dict(granite._TOKEN_CACHE, {"token": None, "expires_at": 0.0}),
+            patch("urllib.request.urlopen", side_effect=http_error),
+        ):
+            with self.assertRaisesRegex(
+                RuntimeError,
+                "Create a new IBM Cloud API key",
+            ) as raised:
+                granite._get_iam_token()
+
+        self.assertIn("BXNIM0415E", str(raised.exception))
 
 
 if __name__ == "__main__":

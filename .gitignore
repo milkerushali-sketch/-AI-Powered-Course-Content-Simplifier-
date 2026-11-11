@@ -38,4 +38,8 @@ coverage/
 *.pptx
 ~$*
 
-package-lock.json
+# Local Netlify folder
+.netlify
+
+# Local integration-test output
+output.txt

@@ -2,218 +2,84 @@
 
 **Problem Statement #19 · Course Content Simplification Agent**
 
-The Challenge – Educational materials often vary in complexity and are not always accessible to learners 
-with different levels of prior knowledge. Students may struggle to grasp key concepts due to jargon
-heavy or overly advanced explanations in faculty notes and textbooks. The challenge is to develop an AI
-powered agent that can intelligently analyze academic content and reframe explanations based on the 
-learner's current proficiency—ranging from beginner to expert. This would support more inclusive 
-learning and personalized education delivery at scale. 
+Turn difficult course content into learner-friendly explanations, examples, revision notes, and quizzes. The Netlify deployment uses a React + Vite frontend and a server-side Netlify Function that can call IBM watsonx.ai / Granite.
 
-Powered by **Edunet Foundation**  via **IBM watsonx.ai**
+## Features
 
----
+- Six structured study-note sections, five multiple-choice questions, and five revision questions
+- Beginner, intermediate, and advanced learning levels
+- Interactive quizzes with answer feedback and scores
+- Five built-in sample passages, TXT/PDF upload, downloadable study packs, and browser history
+- Dark and light appearance
+- Preview mode works without IBM credentials or external API calls
 
-## What It Does
+## Deploy to Netlify
 
-Students often struggle with academic materials written above their proficiency level. This app uses IBM Granite to create a learner-appropriate study pack in one AI call for three levels:
+1. Push this repository to GitHub and select **Add new site → Import an existing project** in Netlify.
+2. Select the repository. `netlify.toml` configures the build command (`npm run build`), publish directory (`dist`), and Netlify Function directory.
+3. Use Node.js **22.12 or newer**. The repository includes `.nvmrc` and sets `NODE_VERSION` for Netlify.
+4. Deploy. The site works immediately in Preview mode; no secrets are required to demonstrate the app.
 
-| Level | Target Learner |
-|---|---|
-| **Beginner** | Age 10–12, completely new to the topic |
-| **Intermediate** | Age 15–17, some subject knowledge |
-| **Advanced** | University student, technically accurate explanation |
+### Enable live IBM Granite
 
-The study pack includes **six structured notes sections**, **five multiple-choice questions**, and **five revision questions**. The notes sections are:
+In the Netlify site dashboard, open **Site configuration → Environment variables** and add these variables for the Functions runtime:
 
-| Section | Description |
-|---|---|
-| Simple Definition | Core concept defined in plain language |
-| Easy Explanation | Numbered step-by-step breakdown |
-| Real-Life Example | Concrete, relatable analogy or scenario |
-| Important Exam Points | 5–7 key bullet facts for revision |
-| Short Summary | 3–5 sentence concise overview |
-| Difficult Words | Glossary of technical terms with simple definitions |
+| Variable | Required | Description |
+|---|---:|---|
+| `WATSONX_API_KEY` | Yes | IBM Cloud API key |
+| `WATSONX_PROJECT_ID` | Yes | watsonx.ai project ID |
+| `WATSONX_URL` | No | Regional endpoint; defaults to `https://us-south.ml.cloud.ibm.com` |
+| `GRANITE_MODEL_ID` | No | Model ID; defaults to `ibm/granite-3-8b-instruct` |
 
-**Additional tools:** A standalone interactive quiz generator, downloadable study packs, and session history.
+After saving or changing variables, trigger a new deploy. In the app sidebar, switch off **Use live IBM Granite** to make live requests.
 
----
+**Keep IBM credentials server-side.** Do not add them to source code, `netlify.toml`, or any `VITE_` variable. The browser calls `/api/study-pack`; the Netlify Function reads the secrets at runtime.
 
-## App Pages
+If IBM returns `BXNIM0415E` or says the key could not be found, create a fresh API key in [IBM Cloud IAM](https://cloud.ibm.com/iam/apikeys), replace `WATSONX_API_KEY` in Netlify, and redeploy. Check that the project ID and regional URL belong to the same watsonx.ai account and region.
 
-| Page | What You Can Do |
-|---|---|
-| **Home** | Paste a question, topic, or notes (or upload TXT/PDF), choose a level, and get a complete study pack |
-| **Simplify** | Full input interface with three tabs: Paste Text · Upload File · Sample Passage |
-| **Study Materials** | Browse the Kaggle dataset passages and compare AI output with real student summaries |
-| **Quiz** | Generate and take an interactive MCQ quiz from any content |
-| **History** | Review all past simplifications from the current session; download as text |
-| **About** | Project info, technology stack, and credential setup guide |
+> The live function is a public endpoint for this educational demo. Before promoting a high-traffic public site, add access control or rate limiting and set IBM usage/quota alerts.
 
----
+## Local development
 
-## Quick Start
+Requirements: Node.js 22.12+ and npm.
 
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/milkerushali-sketch/-AI-Powered-Course-Content-Simplifier-.git
-cd -AI-Powered-Course-Content-Simplifier-
-```
-
-### 2. Install Python dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-Or using the npm helper script (requires Node.js):
-
-```bash
-npm run install:py
-```
-
-### 3. Configure IBM credentials
-
-```bash
-# Windows
-copy .env.example .env
-
-# macOS / Linux
-cp .env.example .env
-```
-
-Open `.env` and fill in your IBM Cloud credentials:
-
-```
-WATSONX_API_KEY=your_ibm_cloud_api_key_here
-WATSONX_PROJECT_ID=your_watsonx_project_id_here
-WATSONX_URL=https://us-south.ml.cloud.ibm.com
-GRANITE_MODEL_ID=ibm/granite-3-8b-instruct
-```
-
-> **Where to get credentials**
-> - **API Key:** [cloud.ibm.com/iam/apikeys](https://cloud.ibm.com/iam/apikeys) → Create an IBM Cloud API key
-> - **Project ID:** [dataplatform.cloud.ibm.com/projects](https://dataplatform.cloud.ibm.com/projects) → Open your project → Manage tab
-
-### 4. Run the app
-
-```bash
-python -m streamlit run app.py
-```
-
-Or:
-
-```bash
+```powershell
+npm ci
 npm run dev
 ```
 
-Open your browser at **http://localhost:8501**
+The Vite/Netlify plugin serves the frontend and local functions. Preview mode is enabled by default. To test live calls locally, configure the same IBM environment variables in the local Netlify environment; never commit a real `.env` file.
 
----
+Run the checks and production build:
 
-## Demo Mode
-
-If IBM credentials are not configured, the app automatically runs in **Demo Mode**. You will see realistic, content-aware placeholder responses that show the full structure of the output. Every page and feature works identically — no credentials needed to explore the UI.
-
----
-
-## Project Files
-
-```
-course-simplifier/
-├── app.py              ← Streamlit frontend — all 6 pages, UI, session state
-├── granite.py          ← IBM Granite / watsonx.ai integration
-│                         IAM token caching, structured study packs, demo mode
-├── dataset.py          ← Kaggle CommonLit dataset processing
-│                         CSV loading, passage extraction, student summaries
-├── requirements.txt    ← Python dependencies
-├── .env.example        ← Credentials template (safe to commit)
-├── .env                ← Your actual credentials (DO NOT commit — gitignored)
-├── test_integration.py ← Integration tests for granite.py and dataset.py
-├── test_granite_flow.py← Offline tests for study-pack parsing and request flow
-└── README.md           ← This file
+```powershell
+npm test
+npm run build
 ```
 
----
+The original Python/Streamlit implementation is retained in `app.py` for reference and local use (`npm run dev:streamlit`). It is not the Netlify deployment entry point.
 
 ## Architecture
 
-```
-Browser
-  │
-  ▼
-Streamlit UI  (app.py)
-  │
-  ├── granite.py
-  │     ├── GET  https://iam.cloud.ibm.com/identity/token   ← IAM auth (cached ~60 min)
-  │     └── POST {WATSONX_URL}/ml/v1/text/generation        ← IBM Granite inference
-  │
-  └── dataset.py
-        ├── kagglehub  ← auto-download CommonLit competition data
-        └── pandas     ← CSV parsing, passage/summary retrieval
+```text
+React + Vite
+  ├─ Preview study packs (local; no network request)
+  └─ POST /api/study-pack
+       └─ Netlify Function
+            ├─ IBM IAM token (server-side)
+            └─ watsonx.ai text generation (server-side)
 ```
 
----
+The server validates request size and learning level, verifies the structured model response, and returns a fixed study-pack shape. The app keeps the latest 20 study packs in browser storage.
 
-## IBM Granite Integration Details
+## Project files
 
-- **Model:** `ibm/granite-3-8b-instruct`
-- **API version:** `2024-05-31`
-- **Endpoint:** `POST {WATSONX_URL}/ml/v1/text/generation`
-- **Decoding:** greedy, `repetition_penalty=1.05`, `stop_sequences=["---END---"]`
-- **Single structured response:** notes, five MCQs, and five revision questions are requested together as JSON in one API call; responses are validated before display
-- **IAM token caching:** the bearer token is cached for its ~60-minute lifetime; only one `/identity/token` call per session
-- **Lazy credential loading:** credentials are read inside functions, not at import time, so `load_dotenv()` always runs first
+| Path | Purpose |
+|---|---|
+| `src/App.tsx` | React app pages, forms, theme, history, and interactions |
+| `src/lib/studyPack.ts` | Preview responses and study-pack export formatting |
+| `netlify/functions/study-pack.ts` | Validated server-side IBM IAM and watsonx.ai integration |
+| `netlify.toml` | Netlify build, function, routing, and response-header configuration |
+| `app.py`, `granite.py`, `dataset.py` | Retained Streamlit implementation |
 
----
-
-## Kaggle Dataset Integration
-
-This app integrates with the **CommonLit – Evaluate Student Summaries** competition dataset.
-
-### Built-in sample passages (no Kaggle account needed)
-
-Five passages are built in and always available:
-
-1. Photosynthesis
-2. Newton's Laws of Motion
-3. The Water Cycle
-4. DNA and Genetics
-5. Supply and Demand in Economics
-
-### Loading the full Kaggle dataset
-
-**Option A — Auto-download via kagglehub (sidebar button)**
-
-Requirements:
-- Kaggle credentials at `~/.kaggle/kaggle.json` OR environment variables `KAGGLE_USERNAME` and `KAGGLE_KEY`
-- Competition rules accepted at [kaggle.com/c/commonlit-evaluate-student-summaries](https://www.kaggle.com/c/commonlit-evaluate-student-summaries)
-
-**Option B — Manual upload (sidebar file uploaders)**
-
-1. Download `prompts_train.csv` and `summaries_train.csv` from the Kaggle competition page
-2. Upload each file using the sidebar file uploaders in the app
-
-After loading, the **Study Materials** page lets you select any passage and compare the AI simplification with real student-written summaries from the dataset.
-
----
-
-## Technologies Used
-
-| Technology | Version | Role |
-|---|---|---|
-| IBM Granite | `ibm/granite-3-8b-instruct` | Foundation LLM for simplification, MCQ, and revision generation |
-| IBM watsonx.ai | REST API `2024-05-31` | Model inference platform |
-| IBM Cloud | — | Cloud infrastructure and IAM authentication |
-| Streamlit | `>=1.32.0` | Web UI framework |
-| Python | `3.11` | Backend logic |
-| pandas | `>=2.0.0` | CSV processing and dataset handling |
-| pypdf | `>=4.0.0` | PDF text extraction |
-| python-dotenv | `>=1.0.0` | `.env` file credential loading |
-| kagglehub | `>=0.3.0` | Kaggle dataset auto-download |
-
----
-
-
-
-*Built with IBM Granite · IBM watsonx.ai · Streamlit · Problem Statement #19*
+Built with React, Vite, Netlify Functions, and IBM watsonx.ai · Edunet Foundation

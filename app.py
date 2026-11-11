@@ -20,7 +20,7 @@ st.set_page_config(
     page_title="Course Simplifier – AI Study Assistant",
     page_icon="🎓",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -31,6 +31,7 @@ CSS = """
 <style>
 /* ── Vars ── */
 :root {
+  --app-text: #f3f6ff;
   --bg: #eef2ff;
   --bg-strong: #e9edff;
   --surface: #ffffff;
@@ -56,15 +57,13 @@ CSS = """
 html, body, .stApp {
   background: #05070d !important;
   font-family: "Inter","Segoe UI",system-ui,sans-serif !important;
-  color: #f3f6ff !important;
+  color: var(--app-text) !important;
 }
 ::selection {
   background: rgba(132, 94, 247, 0.32);
 }
 header[data-testid="stHeader"],
-section[data-testid="stSidebar"],
 div[data-testid="stSidebarNav"],
-[data-testid="collapsedControl"],
 div[data-testid="stDecoration"],
 .topnav {
   display: none !important;
@@ -89,15 +88,14 @@ div[data-testid="stDecoration"],
 .stSuccess p,
 .stWarning p,
 .stError p {
-  color: #f3f6ff !important;
+  color: var(--app-text) !important;
 }
 .stApp p,
 .stApp span,
-.stApp div,
 .stApp label,
 .stApp li,
 .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6 {
-  color: #f3f6ff !important;
+  color: var(--app-text) !important;
 }
 .stApp .stCaption p,
 .stApp small,
@@ -491,46 +489,45 @@ div[data-testid="stFormSubmitButton"] > button:hover {
 }
 
 .feat-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
   margin: 12px 0 42px;
 }
-.feat-item {
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(247,248,255,1) 100%);
-  border-radius: 28px;
-  border: 1px solid rgba(255,255,255,.12);
-  padding: 26px 28px 22px;
-  cursor: pointer;
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  box-shadow: 0 10px 28px rgba(10, 12, 20, 0.28), inset 0 1px 0 rgba(255,255,255,.5);
-  min-height: 160px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.feat-item:hover {
-  border-color: rgba(138, 110, 255, 0.8);
-  box-shadow: 0 16px 32px rgba(122, 92, 255, 0.18), inset 0 1px 0 rgba(255,255,255,.5);
-  transform: translateY(-3px);
-}
 .feat-item-icon {
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   display: block;
   width: 38px;
   height: 38px;
   color: #765cf0 !important;
 }
 .stApp .feat-item-title {
-  font-size: 1.12rem;
+  font-size: 1.12rem !important;
   font-weight: 800;
-  color: #111827 !important;
-  margin-bottom: 8px;
+  color: #f3f6ff !important;
+  margin: 0 0 6px;
 }
 .stApp .feat-item-desc {
-  font-size: 1rem;
-  color: #4b5563 !important;
-  line-height: 1.5;
+  font-size: .94rem !important;
+  color: #bac5dc !important;
+  line-height: 1.5 !important;
+  margin-bottom: 14px;
+}
+.st-key-feature-simplify,
+.st-key-feature-explain,
+.st-key-feature-quiz,
+.st-key-feature-revision {
+  height: 100%;
+  padding: 22px 24px 18px !important;
+  border: 1px solid rgba(146,127,255,.22) !important;
+  border-radius: 22px;
+  background: linear-gradient(155deg, rgba(20,25,42,.96), rgba(12,16,29,.98));
+  box-shadow: 0 12px 28px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.04);
+  transition: border-color .18s ease, transform .18s ease;
+}
+.st-key-feature-simplify:hover,
+.st-key-feature-explain:hover,
+.st-key-feature-quiz:hover,
+.st-key-feature-revision:hover {
+  border-color: rgba(146,127,255,.65) !important;
+  transform: translateY(-2px);
 }
 
 .res-card {
@@ -774,7 +771,116 @@ div[data-testid="stChatInput"] button {
 .stInfo    p  { color: #1e3a5f !important; }
 </style>
 """
-st.markdown(CSS, unsafe_allow_html=True)
+LIGHT_MODE_CSS = """
+<style>
+/* app-light-mode */
+:root {
+  --app-text: #1a2340;
+  --navy: #1a2340;
+  --navy2: #2d3561;
+  --text: #1a2340;
+  --muted: #667089;
+  --border: #d9deeb;
+  --surface: #ffffff;
+  --surface-soft: #f7f8ff;
+}
+html, body, .stApp {
+  background: #f3f5fa !important;
+  color: #1a2340 !important;
+}
+.stApp .stCaption p,
+.stApp small,
+.stApp .stMarkdown small {
+  color: #667089 !important;
+}
+.stApp .feat-item-title,
+.stApp .feat-item-desc,
+.stApp .chat-prompt-heading,
+.stApp .chat-prompt-subtitle {
+  color: #1a2340 !important;
+}
+.st-key-feature-simplify,
+.st-key-feature-explain,
+.st-key-feature-quiz,
+.st-key-feature-revision {
+  background: linear-gradient(155deg, #ffffff, #f7f8ff) !important;
+  border-color: #d9deeb !important;
+  box-shadow: 0 10px 24px rgba(26,35,64,.08) !important;
+}
+.st-key-home-chat-row {
+  background: linear-gradient(145deg, #ffffff, #f7f8ff) !important;
+  border-color: #d9deeb !important;
+  box-shadow: 0 12px 30px rgba(26,35,64,.08) !important;
+}
+.st-key-home-chat-row .stTextInput input {
+  color: #1a2340 !important;
+}
+.st-key-home-chat-row .stTextInput input::placeholder {
+  color: #667089 !important;
+}
+.st-key-home-chat-row [data-testid="stFormSubmitButton"] button,
+.st-key-home-chat-row [data-testid="stFileUploaderDropzone"] button {
+  background: #e9e5ff !important;
+  border-color: #d5ccff !important;
+  color: #3e2d91 !important;
+}
+.st-key-home-chat-row [data-testid="stFileUploaderDropzone"] label,
+.st-key-home-chat-row [data-testid="stFileUploaderDropzone"] span,
+.st-key-home-chat-row [data-testid="stFileUploaderDropzone"] p {
+  color: #3e2d91 !important;
+}
+section[data-testid="stMain"] [data-testid="stFileUploader"] label,
+section[data-testid="stMain"] [data-testid="stFileUploader"] p,
+section[data-testid="stMain"] [data-testid="stFileUploader"] span {
+  color: #1a2340 !important;
+}
+section[data-testid="stMain"] [data-testid="stFileUploaderDropzone"] {
+  background: #ffffff !important;
+  border-color: #cbd2e2 !important;
+  color: #1a2340 !important;
+}
+div[data-testid="stChatInput"] {
+  background: #ffffff !important;
+  border-color: #d9deeb !important;
+  box-shadow: 0 8px 18px rgba(26,35,64,.08) !important;
+}
+div[data-testid="stChatInput"] textarea,
+div[data-testid="stChatInput"] textarea::placeholder,
+div[data-testid="stChatInput"] label,
+div[data-testid="stChatInput"] span,
+div[data-testid="stChatInput"] p {
+  color: #1a2340 !important;
+}
+div[data-testid="stChatInput"] button {
+  background: #e9e5ff !important;
+  color: #3e2d91 !important;
+}
+section[data-testid="stSidebar"] {
+  background: linear-gradient(180deg, #171d37 0%, #1d2348 58%, #201b43 100%) !important;
+}
+.stApp section[data-testid="stSidebar"] * {
+  color: #c8d4ee !important;
+}
+.stApp section[data-testid="stSidebar"] h1,
+.stApp section[data-testid="stSidebar"] h2,
+.stApp section[data-testid="stSidebar"] h3 {
+  color: #ffffff !important;
+}
+.stApp section[data-testid="stSidebar"] .stCaption p {
+  color: #c8d4ee !important;
+}
+.stApp .stButton > button,
+.stApp .stDownloadButton > button,
+.stApp .stButton > button *,
+.stApp .stDownloadButton > button * {
+  color: #ffffff !important;
+}
+</style>
+"""
+st.markdown(
+    CSS + (LIGHT_MODE_CSS if st.session_state.get("light_mode", False) else ""),
+    unsafe_allow_html=True,
+)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -886,6 +992,7 @@ _defs = {
     "page": "Home",
     "prompts_df": None, "summaries_df": None,
     "_prompts_name": None, "_summaries_name": None,
+    "demo_mode": True,
     "last_level": "Beginner", "last_content": "",
     "history": [],
     "quiz_answers": {}, "quiz_submitted": False,
@@ -942,26 +1049,23 @@ with st.sidebar:
         unsafe_allow_html=True,
     )
 
-    # ── AI status pill ────────────────────────────────────────────────────────
-    if granite.is_configured():
-        st.markdown(
-            "<div style='margin:0 12px 14px;padding:8px 14px;background:rgba(22,163,74,.18);"
-            "border:1px solid rgba(22,163,74,.35);border-radius:10px;display:flex;"
-            "align-items:center;gap:8px'>"
-            "<span style='color:#6ee7b7!important;font-size:.75rem'>●</span>"
-            "<span style='color:#6ee7b7!important;font-size:.78rem;font-weight:600'>"
-            "IBM Granite Connected</span></div>",
-            unsafe_allow_html=True,
-        )
+    demo_mode = st.toggle(
+        "Preview mode (no IBM API calls)",
+        key="demo_mode",
+        help="Use built-in sample responses to test the app without IBM credentials.",
+    )
+    st.toggle(
+        "Light appearance",
+        key="light_mode",
+        help="Switch the app between its dark and light color schemes.",
+    )
+    preview_mode = demo_mode or not granite.is_configured()
+    if preview_mode:
+        st.caption("Preview responses are enabled.")
     else:
-        st.markdown(
-            "<div style='margin:0 12px 14px;padding:8px 14px;background:rgba(251,191,36,.12);"
-            "border:1px solid rgba(251,191,36,.3);border-radius:10px;display:flex;"
-            "align-items:center;gap:8px'>"
-            "<span style='color:#fbbf24!important;font-size:.75rem'>●</span>"
-            "<span style='color:#fbbf24!important;font-size:.78rem;font-weight:600'>"
-            "Preview Mode</span></div>",
-            unsafe_allow_html=True,
+        st.warning(
+            "Live mode is on. IBM credentials are present but have not been verified. "
+            "If a request fails, turn Preview mode back on."
         )
 
     st.markdown(
@@ -1000,80 +1104,13 @@ with st.sidebar:
     cur_page  = NAV_DISPLAY[_page_key]
     st.session_state.page = cur_page
 
-    st.markdown(
-        "<div style='height:1px;background:rgba(255,255,255,.10);margin:14px 12px 14px'></div>",
-        unsafe_allow_html=True,
-    )
-
-    # ── Dataset section ───────────────────────────────────────────────────────
-    st.markdown(
-        "<div style='font-size:.68rem;font-weight:700;color:rgba(200,212,238,.4);"
-        "text-transform:uppercase;letter-spacing:.1em;padding:0 16px 8px'>Dataset</div>",
-        unsafe_allow_html=True,
-    )
-
-    # Status indicator
-    if st.session_state.prompts_df is not None:
-        n_p = len(st.session_state.prompts_df)
-        n_s = len(st.session_state.summaries_df) if st.session_state.summaries_df is not None else 0
-        sums_line = (f"<br><span style='color:#a78bfa!important'>📝 {n_s} summaries</span>" if n_s else "")
-        st.markdown(
-            f"<div style='margin:0 12px 10px;padding:8px 12px;background:rgba(107,82,212,.18);"
-            f"border:1px solid rgba(107,82,212,.3);border-radius:8px;font-size:.77rem'>"
-            f"<span style='color:#a78bfa!important'>📖 {n_p} passages loaded</span>"
-            f"{sums_line}"
-            f"</div>",
-            unsafe_allow_html=True,
-        )
-    else:
-        st.markdown(
-            "<div style='margin:0 12px 10px;padding:8px 12px;background:rgba(255,255,255,.05);"
-            "border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:.77rem;"
-            "color:rgba(200,212,238,.5)!important'>No dataset loaded</div>",
-            unsafe_allow_html=True,
-        )
-
-    with st.expander("📂 Load Study Materials", expanded=False):
-        if st.button("⬇️ Auto-Download via kagglehub", use_container_width=True, key="kh_btn"):
-            with st.spinner("Downloading…"):
-                p_df, s_df, err = dataset.load_from_kagglehub()
-            if err:
-                st.error("Could not download. Try manual upload.")
-            else:
-                st.session_state.prompts_df   = p_df
-                st.session_state.summaries_df = s_df
-                st.success(f"✅ {len(p_df)} passages loaded")
-
-        st.markdown(
-            "<span style='font-size:.76rem;color:rgba(200,212,238,.5)!important'>"
-            "Or upload CSV files manually:</span>",
-            unsafe_allow_html=True,
-        )
-        uf_p = st.file_uploader("prompts_train.csv",   type=["csv"], key="uf_p",
-                                label_visibility="collapsed")
-        uf_s = st.file_uploader("summaries_train.csv", type=["csv"], key="uf_s",
-                                label_visibility="collapsed")
-        if uf_p and st.session_state._prompts_name != uf_p.name:
-            df, err = dataset.load_csv_from_upload(uf_p)
-            if not err:
-                st.session_state.prompts_df    = df
-                st.session_state._prompts_name = uf_p.name
-                st.success(f"✅ {len(df)} passages ready")
-        if uf_s and st.session_state._summaries_name != uf_s.name:
-            df, err = dataset.load_csv_from_upload(uf_s)
-            if not err:
-                st.session_state.summaries_df    = df
-                st.session_state._summaries_name = uf_s.name
-                st.success(f"✅ {len(df)} summaries ready")
-
     # ── Footer ────────────────────────────────────────────────────────────────
     st.markdown(
-        "<div style='position:fixed;bottom:0;width:214px;padding:14px 16px 16px;"
-        "background:rgba(26,35,64,.95);border-top:1px solid rgba(255,255,255,.08)'>"
-        "<div style='font-size:.72rem;color:rgba(200,212,238,.45)!important;"
-        "text-align:center;line-height:1.6'>Welcome, Student! 👋<br>"
-        "v2.0 · IBM Granite Powered</div>"
-        "</div>",
+        "<div style='margin-top:24px;padding:14px 8px 8px;"
+        "border-top:1px solid rgba(255,255,255,.12);"
+        "font-size:.78rem;color:#c8d4ee!important;text-align:center;line-height:1.7'>"
+        "<strong style='color:#fff!important'>Welcome, Student! 👋</strong><br>"
+        "Course Simplifier · IBM Granite</div>",
         unsafe_allow_html=True,
     )
 
@@ -1089,40 +1126,66 @@ st.markdown('<div class="page-wrap">', unsafe_allow_html=True)
 # ══════════════════════════════════════════════════════════════════════════════
 if cur_page == "Home":
 
-    # ── Feature cards 2×2 grid ─────────────────────────────────────────────────
-    st.markdown('<div class="section-label">What would you like to learn today?</div>',
-                unsafe_allow_html=True)
-
     st.markdown(
-        f'<div class="feat-grid">'
-
-        f'<div class="feat-item">'
-        f'<span class="feat-item-icon">{_ICON_BOOK}</span>'
-        f'<div class="feat-item-title">Simplify Notes</div>'
-        f'<div class="feat-item-desc">Understand difficult notes.</div>'
-        f'</div>'
-
-        f'<div class="feat-item">'
-        f'<span class="feat-item-icon">{_ICON_BRAIN}</span>'
-        f'<div class="feat-item-title">Explain Topics</div>'
-        f'<div class="feat-item-desc">Learn with examples.</div>'
-        f'</div>'
-
-        f'<div class="feat-item">'
-        f'<span class="feat-item-icon">{_ICON_QUIZ}</span>'
-        f'<div class="feat-item-title">Generate Quiz</div>'
-        f'<div class="feat-item-desc">Test your knowledge.</div>'
-        f'</div>'
-
-        f'<div class="feat-item">'
-        f'<span class="feat-item-icon">{_ICON_NOTES}</span>'
-        f'<div class="feat-item-title">Revision Notes</div>'
-        f'<div class="feat-item-desc">Prepare for exams.</div>'
-        f'</div>'
-
-        f'</div>',
+        '<div class="section-label">What would you like to learn today?</div>',
         unsafe_allow_html=True,
     )
+
+    home_examples = [
+        (
+            "simplify",
+            "Simplify Notes",
+            _ICON_BOOK,
+            "Turn difficult notes into clear explanations.",
+            "Photosynthesis is the process by which green plants use sunlight, "
+            "water, and carbon dioxide to make glucose and oxygen. It takes place "
+            "in chloroplasts, where chlorophyll absorbs light energy.",
+        ),
+        (
+            "explain",
+            "Explain Topics",
+            _ICON_BRAIN,
+            "Learn a topic with a simple example.",
+            "Explain gravity to a beginner and give an everyday example.",
+        ),
+        (
+            "quiz",
+            "Generate Quiz",
+            _ICON_QUIZ,
+            "Try a quiz based on sample study notes.",
+            "The water cycle moves water through evaporation, condensation, "
+            "precipitation, and collection. The sun warms water, causing it to "
+            "evaporate. Water vapor cools and forms clouds, then falls as rain "
+            "or snow and gathers in rivers, lakes, and oceans.",
+        ),
+        (
+            "revision",
+            "Revision Notes",
+            _ICON_NOTES,
+            "Make exam-ready notes from a sample topic.",
+            "Cells are the basic units of life. The cell theory states that all "
+            "living things are made of cells, cells are the basic unit of "
+            "structure and function, and new cells come from existing cells.",
+        ),
+    ]
+    selected_home_example = None
+    with st.container(key="feat-grid"):
+        feature_columns = st.columns(2, gap="medium")
+        for index, (key, title, icon, description, example_text) in enumerate(home_examples):
+            with feature_columns[index % 2]:
+                with st.container(key=f"feature-{key}", border=True):
+                    st.markdown(
+                        f'<div class="feat-item-icon">{icon}</div>'
+                        f'<div class="feat-item-title">{title}</div>'
+                        f'<div class="feat-item-desc">{description}</div>',
+                        unsafe_allow_html=True,
+                    )
+                    if st.button(
+                        "Try sample",
+                        key=f"home_example_{key}",
+                        width="stretch",
+                    ):
+                        selected_home_example = (title, example_text)
 
     st.markdown(
         '<div class="chat-prompt-heading">What would you like to simplify?</div>'
@@ -1133,6 +1196,7 @@ if cur_page == "Home":
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
+    home_request = None
     level_col, _ = st.columns([1.5, 3])
     with level_col:
         home_level = st.selectbox(
@@ -1190,44 +1254,70 @@ if cur_page == "Home":
                     user_message = text or f"Uploaded notes: {uploaded.name}"
                     if text and uploaded_text:
                         user_message = f"{text}\n\nUploaded notes: {uploaded.name}"
-                    st.session_state.chat_history.append(
-                        {"role": "user", "content": user_message}
-                    )
-                    st.session_state.last_level = home_level
-                    try:
-                        with st.spinner(
-                            "IBM Granite is preparing your study pack..."
-                            if granite.is_configured()
-                            else "Preparing a study-pack preview..."
-                        ):
-                            study_pack = granite.generate_study_pack(content, home_level)
-                        st.session_state.chat_history.append({
-                            "role": "assistant",
-                            "content": "Study pack",
-                            "level": home_level,
-                            "source_content": content,
-                            "study_pack": study_pack,
-                        })
-                        preview = content[:60].replace("\n", " ")
-                        st.session_state.history.insert(0, {
-                            "title": preview + ("…" if len(content) > 60 else ""),
-                            "level": home_level,
-                            "results": study_pack["sections"],
-                            "mcqs": study_pack["mcqs"],
-                            "revq": study_pack["revision_questions"],
-                        })
-                        if len(st.session_state.history) > 20:
-                            st.session_state.history = st.session_state.history[:20]
-                    except (RuntimeError, ValueError) as exc:
-                        st.error(f"Could not generate a response: {exc}")
+                    home_request = (content, user_message)
                 elif not upload_error:
                     st.warning("Enter a topic or question, or upload a TXT/PDF file.")
+
+    if selected_home_example:
+        title, example_text = selected_home_example
+        home_request = (example_text, f"Try sample: {title}")
+
+    if home_request:
+        content, user_message = home_request
+        st.session_state.chat_history.append(
+            {"role": "user", "content": user_message}
+        )
+        st.session_state.last_level = home_level
+        try:
+            with st.spinner(
+                "IBM Granite is preparing your study pack..."
+                if not preview_mode
+                else "Preparing a sample study pack..."
+            ):
+                study_pack = granite.generate_study_pack(
+                    content,
+                    home_level,
+                    use_demo=preview_mode,
+                )
+        except (RuntimeError, ValueError) as exc:
+            error_message = f"Could not generate a response: {exc}"
+            st.error(error_message)
+            st.session_state.chat_history.append({
+                "role": "assistant",
+                "content": error_message,
+                "is_error": True,
+            })
+            if not preview_mode:
+                st.info(
+                    "To try the sample buttons without IBM credentials, enable "
+                    "\"Preview mode (no IBM API calls)\" in the sidebar. For live "
+                    "responses, replace WATSONX_API_KEY in your .env file with a valid IBM Cloud API key."
+                )
+        else:
+            st.session_state.chat_history.append({
+                "role": "assistant",
+                "content": "Study pack",
+                "level": home_level,
+                "source_content": content,
+                "preview_mode": preview_mode,
+                "study_pack": study_pack,
+            })
+            preview = content[:60].replace("\n", " ")
+            st.session_state.history.insert(0, {
+                "title": preview + ("…" if len(content) > 60 else ""),
+                "level": home_level,
+                "results": study_pack["sections"],
+                "mcqs": study_pack["mcqs"],
+                "revq": study_pack["revision_questions"],
+            })
+            if len(st.session_state.history) > 20:
+                st.session_state.history = st.session_state.history[:20]
 
     for message_index, message in enumerate(st.session_state.chat_history):
         with st.chat_message(message["role"]):
             if message["role"] == "assistant" and "study_pack" in message:
-                if not granite.is_configured():
-                    st.info("Preview mode — connect IBM Granite for AI-generated responses.")
+                if message["preview_mode"]:
+                    st.caption("Sample response · Preview mode")
                 st.caption(f"Study pack · {message['level']}")
                 render_study_pack(message["study_pack"])
                 st.download_button(
@@ -1243,6 +1333,8 @@ if cur_page == "Home":
                     mime="text/plain",
                     key=f"home_study_pack_download_{message_index}",
                 )
+            elif message.get("is_error"):
+                st.error(message["content"])
             else:
                 st.write(message["content"])
 
@@ -1337,11 +1429,11 @@ elif cur_page == "Simplify Content":
 
             ai_badge = (
                 '<span class="ai-badge">🤖 IBM Granite</span>'
-                if granite.is_configured()
+                if not preview_mode
                 else '<span class="demo-badge">📋 Preview Mode</span>'
             )
             st.markdown(ai_badge, unsafe_allow_html=True)
-            if not granite.is_configured():
+            if preview_mode:
                 st.info("Preview mode — connect IBM Granite for real AI responses.", icon="ℹ️")
 
             divider(f"AI RESULTS · {s_level.upper()}")
@@ -1349,10 +1441,14 @@ elif cur_page == "Simplify Content":
             try:
                 with st.spinner(
                     "IBM Granite is preparing your study pack..."
-                    if granite.is_configured()
+                    if not preview_mode
                     else "Generating preview..."
                 ):
-                    study_pack = granite.generate_study_pack(content_input, s_level)
+                    study_pack = granite.generate_study_pack(
+                        content_input,
+                        s_level,
+                        use_demo=preview_mode,
+                    )
             except (RuntimeError, ValueError) as exc:
                 st.error(f"Could not generate a study pack: {exc}")
             else:
@@ -1440,15 +1536,23 @@ elif cur_page == "Study Materials":
         if sm_btn:
             ai_badge = (
                 '<span class="ai-badge">🤖 IBM Granite</span>'
-                if granite.is_configured()
+                if not preview_mode
                 else '<span class="demo-badge">📋 Preview Mode</span>'
             )
             st.markdown(ai_badge, unsafe_allow_html=True)
-            if not granite.is_configured():
+            if preview_mode:
                 st.info("Preview mode active.", icon="ℹ️")
             try:
-                with st.spinner("Preparing your study pack…"):
-                    study_pack = granite.generate_study_pack(passage["text"], ml_level)
+                with st.spinner(
+                    "Preparing your study pack..."
+                    if preview_mode
+                    else "IBM Granite is preparing your study pack..."
+                ):
+                    study_pack = granite.generate_study_pack(
+                        passage["text"],
+                        ml_level,
+                        use_demo=preview_mode,
+                    )
             except (RuntimeError, ValueError) as exc:
                 st.error(f"Could not simplify this passage: {exc}")
             else:
@@ -1483,7 +1587,11 @@ elif cur_page == "Quiz Generator":
         qz_level = st.selectbox("qz_level", ["Beginner","Intermediate","Advanced"],
                                 label_visibility="collapsed")
     with qz2:
-        gen_btn = st.button("🎯 Generate Quiz", use_container_width=True)
+        gen_btn = st.button(
+            "🎯 Generate Quiz",
+            width="stretch",
+            key="qz_generate_btn",
+        )
     st.markdown("</div>", unsafe_allow_html=True)
 
     if gen_btn:
@@ -1491,10 +1599,18 @@ elif cur_page == "Quiz Generator":
             st.warning("Please paste at least a few sentences to generate a quiz.")
         else:
             try:
-                if not granite.is_configured():
+                if preview_mode:
                     st.info("Preview mode — showing sample questions.", icon="ℹ️")
-                with st.spinner("Generating quiz…"):
-                    raw = granite.generate_mcqs(qz_content, qz_level)
+                with st.spinner(
+                    "Generating preview quiz..."
+                    if preview_mode
+                    else "IBM Granite is generating your quiz..."
+                ):
+                    raw = granite.generate_mcqs(
+                        qz_content,
+                        qz_level,
+                        use_demo=preview_mode,
+                    )
                 parsed_questions = _parse_mcqs(raw)
                 if len(parsed_questions) != 5 or any(
                     set(question["options"]) != {"A", "B", "C", "D"}
