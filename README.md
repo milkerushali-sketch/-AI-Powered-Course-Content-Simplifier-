@@ -1,85 +1,147 @@
 # AI-Powered Course Content Simplifier
 
-**Problem Statement #19 · Course Content Simplification Agent**
+**Problem Statement #19 — Course Content Simplification Agent**
 
-Turn difficult course content into learner-friendly explanations, examples, revision notes, and quizzes. The Netlify deployment uses a React + Vite frontend and a server-side Netlify Function that can call IBM watsonx.ai / Granite.
+Course Content Simplifier turns difficult learning material into clear, level-appropriate study resources. Enter a topic or course text, upload a TXT or PDF file, or try a built-in sample to create notes, quizzes, and revision questions.
+
+The main application uses React, Vite, and TypeScript. It can generate study packs locally in preview mode or use IBM watsonx.ai with the IBM Granite model for live generation.
 
 ## Features
 
-- Six structured study-note sections, five multiple-choice questions, and five revision questions
-- Beginner, intermediate, and advanced learning levels
-- Interactive quizzes with answer feedback and scores
-- Five built-in sample passages, TXT/PDF upload, downloadable study packs, and browser history
-- Dark and light appearance
-- Preview mode works without IBM credentials or external API calls
+- Generate six structured note sections, five multiple-choice questions, and five revision questions.
+- Choose a beginner, intermediate, or advanced learning level.
+- Take interactive quizzes with answer feedback and scores.
+- Provide text, upload a TXT or PDF file, or select from five built-in samples.
+- Download study packs and revisit the latest 20 packs saved in the browser.
+- Switch between dark and light appearance.
+- Use preview mode without IBM credentials or external AI requests.
 
-## Deploy to Netlify
+## IBM Technologies Used
 
-1. Push this repository to GitHub and select **Add new site → Import an existing project** in Netlify.
-2. Select the repository. `netlify.toml` configures the build command (`npm run build`), publish directory (`dist`), and Netlify Function directory.
-3. Use Node.js **22.12 or newer**. The repository includes `.nvmrc` and sets `NODE_VERSION` for Netlify.
-4. Deploy. The site works immediately in Preview mode; no secrets are required to demonstrate the app.
+- **IBM watsonx.ai** — processes learner-provided course material and returns generated study packs.
+- **IBM Granite 3-8B Instruct** — generates simplified notes, quiz questions, and revision questions.
+- **IBM Cloud IAM** — securely authenticates server-side requests to watsonx.ai.
 
-### Enable live IBM Granite
+## Run locally
 
-In the Netlify site dashboard, open **Site configuration → Environment variables** and add these variables for the Functions runtime:
+### 1. Install the prerequisites
 
-| Variable | Required | Description |
-|---|---:|---|
-| `WATSONX_API_KEY` | Yes | IBM Cloud API key |
-| `WATSONX_PROJECT_ID` | Yes | watsonx.ai project ID |
-| `WATSONX_URL` | No | Regional endpoint; defaults to `https://us-south.ml.cloud.ibm.com` |
-| `GRANITE_MODEL_ID` | No | Model ID; defaults to `ibm/granite-3-8b-instruct` |
+- [Git](https://git-scm.com/downloads)
+- [Node.js 22.12 or newer](https://nodejs.org/) (npm is included)
 
-After saving or changing variables, trigger a new deploy. In the app sidebar, switch off **Use live IBM Granite** to make live requests.
+Check that Node.js and npm are available:
 
-**Keep IBM credentials server-side.** Do not add them to source code, `netlify.toml`, or any `VITE_` variable. The browser calls `/api/study-pack`; the Netlify Function reads the secrets at runtime.
+```powershell
+node --version
+npm --version
+```
 
-If IBM returns `BXNIM0415E` or says the key could not be found, create a fresh API key in [IBM Cloud IAM](https://cloud.ibm.com/iam/apikeys), replace `WATSONX_API_KEY` in Netlify, and redeploy. Check that the project ID and regional URL belong to the same watsonx.ai account and region.
+### 2. Clone the repository
 
-> The live function is a public endpoint for this educational demo. Before promoting a high-traffic public site, add access control or rate limiting and set IBM usage/quota alerts.
+Replace the example URL and folder name with the repository URL and name:
 
-## Local development
+```powershell
+git clone <repository-url>
+Set-Location <repository-folder>
+```
 
-Requirements: Node.js 22.12+ and npm.
+### 3. Install dependencies
 
 ```powershell
 npm ci
+```
+
+### 4. Start the development server
+
+```powershell
 npm run dev
 ```
 
-The Vite/Netlify plugin serves the frontend and local functions. Preview mode is enabled by default. To test live calls locally, configure the same IBM environment variables in the local Netlify environment; never commit a real `.env` file.
+Open the local URL printed in the terminal (usually `http://127.0.0.1:5173`). Preview mode works without IBM credentials. Keep the terminal running while you use the app; press **Ctrl+C** to stop the server.
 
-Run the checks and production build:
+## Enable live IBM Granite generation (optional)
+
+Live generation requires an IBM Cloud API key and a watsonx.ai project ID. The app works in preview mode without them.
+
+1. Copy the example environment file:
+
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+2. Open `.env` and replace the example values:
+
+   ```text
+   WATSONX_API_KEY=your_ibm_cloud_api_key
+   WATSONX_PROJECT_ID=your_watsonx_project_id
+   WATSONX_URL=https://us-south.ml.cloud.ibm.com
+   GRANITE_MODEL_ID=ibm/granite-3-8b-instruct
+   ```
+
+3. Restart the development server if it was already running, then enable live IBM Granite in the app.
+
+Keep `.env` private. Do not commit credentials or expose them through client-side `VITE_` variables. The API key and project ID are used by the server-side function.
+
+| Variable             | Required for live generation | Default or purpose                              |
+| -------------------- | ---------------------------: | ----------------------------------------------- |
+| `WATSONX_API_KEY`    |                          Yes | IBM Cloud API key                               |
+| `WATSONX_PROJECT_ID` |                          Yes | watsonx.ai project ID                           |
+| `WATSONX_URL`        |                           No | Defaults to `https://us-south.ml.cloud.ibm.com` |
+| `GRANITE_MODEL_ID`   |                           No | Defaults to `ibm/granite-3-8b-instruct`         |
+
+## Run checks
+
+Run the test suite:
 
 ```powershell
 npm test
+```
+
+Run type checks and create a production build:
+
+```powershell
 npm run build
 ```
 
-The original Python/Streamlit implementation is retained in `app.py` for reference and local use (`npm run dev:streamlit`). It is not the Netlify deployment entry point.
+The production build is written to `dist/`.
 
-## Architecture
+## Optional: run the retained Streamlit version
 
-```text
-React + Vite
-  ├─ Preview study packs (local; no network request)
-  └─ POST /api/study-pack
-       └─ Netlify Function
-            ├─ IBM IAM token (server-side)
-            └─ watsonx.ai text generation (server-side)
+The repository also contains an earlier Python/Streamlit implementation. To run it locally, create and activate a virtual environment, install the Python requirements, and start Streamlit:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+npm run dev:streamlit
 ```
 
-The server validates request size and learning level, verifies the structured model response, and returns a fixed study-pack shape. The app keeps the latest 20 study packs in browser storage.
+The Streamlit version is separate from the React application.
 
-## Project files
+## How the application works
 
-| Path | Purpose |
-|---|---|
-| `src/App.tsx` | React app pages, forms, theme, history, and interactions |
-| `src/lib/studyPack.ts` | Preview responses and study-pack export formatting |
-| `netlify/functions/study-pack.ts` | Validated server-side IBM IAM and watsonx.ai integration |
-| `netlify.toml` | Netlify build, function, routing, and response-header configuration |
-| `app.py`, `granite.py`, `dataset.py` | Retained Streamlit implementation |
+1. The learner provides course material and selects a learning level.
+2. Preview mode creates a sample study pack locally, without an AI request.
+3. Live mode sends the content to `/api/study-pack`.
+4. The server-side function authenticates with IBM IAM and requests generation from watsonx.ai.
+5. The response is validated and presented as notes, quiz questions, and revision questions.
 
-Built with React, Vite, Netlify Functions, and IBM watsonx.ai · Edunet Foundation
+The current implementation uses a prompt-driven IBM Granite model workflow. It does not currently use Langflow, RAG, or multiple collaborating agents.
+
+## Project structure
+
+| Path                                 | Purpose                                                    |
+| ------------------------------------ | ---------------------------------------------------------- |
+| `src/App.tsx`                        | React application, forms, theme, history, and interactions |
+| `src/lib/studyPack.ts`               | Preview study packs and export formatting                  |
+| `src/types.ts`                       | Shared study-pack types                                    |
+| `netlify/functions/study-pack.ts`    | Server-side IBM IAM and watsonx.ai integration             |
+| `server.mjs`                         | Node.js server for the frontend and study-pack API         |
+| `netlify.toml`                       | Local Vite/Netlify plugin and function configuration       |
+| `app.py`, `granite.py`, `dataset.py` | Retained Python/Streamlit implementation                   |
+
+---
+
+Made by **Vrushali Milke**, with a mission to make learning clearer and more joyful.
+
+Built using React, Vite, TypeScript, and IBM watsonx.ai.
